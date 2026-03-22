@@ -51,7 +51,13 @@ h1.main-title {
   margin: 0 auto 50px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
   position: relative;
-  overflow: hidden;
+}
+.worksheet::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 24px;
+  pointer-events: none;
 }
 
 .worksheet::before {
@@ -60,6 +66,8 @@ h1.main-title {
   top: 0; left: 0; right: 0;
   height: 8px;
   background: linear-gradient(90deg, #e94560, #f8d56b, #53d8a8, #5b86e5, #e94560);
+  border-radius: 24px 24px 0 0;
+  z-index: 1;
 }
 
 .ws-title {
@@ -92,18 +100,23 @@ h1.main-title {
 .seder-plate-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   position: sticky;
   top: 0;
   z-index: 10;
   background: white;
-  padding: 15px 0;
-  border-bottom: 2px solid #f0f0f0;
+  padding: 10px 0;
+  border-bottom: 2px solid #eee;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-left: -40px;
+  margin-right: -40px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 .seder-plate {
-  width: 240px;
-  height: 240px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   background: linear-gradient(135deg, #f0e6d3, #d4c5a9);
   border: 6px solid #b8a88a;
@@ -113,8 +126,8 @@ h1.main-title {
 
 .plate-item {
   position: absolute;
-  width: 55px;
-  height: 55px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -139,30 +152,30 @@ h1.main-title {
 .plate-item.revealed .item-emoji { opacity: 1; }
 .plate-item.revealed .q-mark { opacity: 0; }
 
-.item-emoji { transition: opacity 0.5s; font-size: 26px; }
+.item-emoji { transition: opacity 0.5s; font-size: 20px; }
 .q-mark {
   position: absolute;
-  font-size: 28px;
+  font-size: 20px;
   color: #999;
   font-weight: 800;
   transition: opacity 0.3s;
 }
 
 /* Row 1: זרוע (right) + ביצה (left) */
-.plate-item:nth-child(1) { top: 12px; right: 25px; }
-.plate-item:nth-child(2) { top: 12px; left: 25px; }
+.plate-item:nth-child(1) { top: 8px; right: 18px; }
+.plate-item:nth-child(2) { top: 8px; left: 18px; }
 /* Row 2: מרור (center) */
-.plate-item:nth-child(3) { top: 50%; left: 50%; margin-left: -27px; margin-top: -27px; }
+.plate-item:nth-child(3) { top: 50%; left: 50%; margin-left: -20px; margin-top: -20px; }
 /* Row 3: חרוסת (right) + כרפס (left) */
-.plate-item:nth-child(4) { bottom: 55px; right: 25px; }
-.plate-item:nth-child(5) { bottom: 55px; left: 25px; }
+.plate-item:nth-child(4) { bottom: 40px; right: 18px; }
+.plate-item:nth-child(5) { bottom: 40px; left: 18px; }
 /* Row 4: חזרת (bottom center) */
-.plate-item:nth-child(6) { bottom: 5px; left: 50%; margin-left: -27px; }
+.plate-item:nth-child(6) { bottom: 2px; left: 50%; margin-left: -20px; }
 
 .plate-label {
   position: absolute;
-  bottom: -20px;
-  font-size: 11px;
+  bottom: -16px;
+  font-size: 9px;
   font-weight: 700;
   color: #5a4e3c;
   white-space: nowrap;
@@ -308,27 +321,32 @@ h1.main-title {
 /* Hangman + Letters layout */
 .game-area {
   display: flex;
-  gap: 30px;
+  gap: 20px;
   align-items: flex-start;
   justify-content: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
   position: sticky;
   top: 0;
   z-index: 10;
   background: white;
-  padding: 15px 0;
-  border-bottom: 2px solid #f0f0f0;
+  padding: 10px 0;
+  border-bottom: 2px solid #eee;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  margin-left: -40px;
+  margin-right: -40px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 /* Hangman SVG */
 .hangman-box {
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 10px 15px;
   border: 3px solid #dee2e6;
   text-align: center;
-  min-width: 160px;
+  min-width: 130px;
   position: relative;
 }
 .hangman-box h3 { margin-bottom: 5px; }
@@ -338,8 +356,8 @@ h1.main-title {
   color: #636e72;
 }
 .hangman-svg {
-  width: 120px;
-  height: 150px;
+  width: 90px;
+  height: 115px;
 }
 .hangman-svg line, .hangman-svg circle {
   stroke: #e94560;
@@ -384,15 +402,15 @@ h1.main-title {
 }
 
 .letter-box {
-  width: 32px;
-  height: 38px;
+  width: 28px;
+  height: 34px;
   border: 3px solid #ddd;
   border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: 'Suez One', serif;
-  font-size: 18px;
+  font-size: 16px;
   color: transparent;
   background: linear-gradient(135deg, #f5f5f5, #eee);
   transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -905,18 +923,37 @@ const hangmanParts = ['hm_head', 'hm_body', 'hm_larm', 'hm_rarm', 'hm_lleg', 'hm
 let mistakes = 0;
 let correctCount = 0;
 let totalNonSpace = 0;
-let nextLetterIdx = 0;
+let revealedCount = 0;
 let gameEnded = false;
 
-// Shuffle array to randomize which letters get revealed
-let letterIndices = [];
+// Track unique letters and which are revealed
+let uniqueLetters = [];
+let revealedLetters = new Set();
+let allLetterPositions = {}; // letter -> [indices]
 
 function buildLetterGrid() {
   const grid = document.getElementById('letterGrid');
   grid.innerHTML = '';
   const words = secretText.split(' ');
   let idx = 0;
-  letterIndices = [];
+  const lettersOnly = secretText.replace(/ /g, '');
+  allLetterPositions = {};
+  revealedLetters = new Set();
+  revealedCount = 0;
+
+  // Build position map
+  for (let i = 0; i < lettersOnly.length; i++) {
+    const ch = lettersOnly[i];
+    if (!allLetterPositions[ch]) allLetterPositions[ch] = [];
+    allLetterPositions[ch].push(i);
+  }
+
+  // Get unique letters in shuffled order
+  uniqueLetters = [...new Set(lettersOnly.split(''))];
+  for (let i = uniqueLetters.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [uniqueLetters[i], uniqueLetters[j]] = [uniqueLetters[j], uniqueLetters[i]];
+  }
 
   words.forEach((word, wIdx) => {
     for (let i = 0; i < word.length; i++) {
@@ -924,7 +961,7 @@ function buildLetterGrid() {
       box.className = 'letter-box';
       box.textContent = word[i];
       box.id = 'letter_' + idx;
-      letterIndices.push(idx);
+      box.dataset.letter = word[i];
       idx++;
       grid.appendChild(box);
     }
@@ -936,12 +973,6 @@ function buildLetterGrid() {
   });
 
   totalNonSpace = idx;
-  // Shuffle letter reveal order for surprise
-  for (let i = letterIndices.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [letterIndices[i], letterIndices[j]] = [letterIndices[j], letterIndices[i]];
-  }
-
   document.getElementById('totalLetters').textContent = totalNonSpace;
   document.getElementById('letterCount').textContent = 0;
 }
@@ -956,30 +987,38 @@ function checkTF(btn, qNum, selected) {
   buttons.forEach(b => b.disabled = true);
 
   if (selected === tfAnswers[qNum]) {
-    // CORRECT — reveal one letter
+    // CORRECT — reveal all instances of one unique letter
     btn.classList.add('selected-correct');
     card.classList.add('correct');
     fb.textContent = tfFeedbacks[qNum].correct;
     fb.className = 'feedback-text show correct-fb';
     correctCount++;
 
-    if (nextLetterIdx < letterIndices.length) {
-      const revealIdx = letterIndices[nextLetterIdx];
-      const lb = document.getElementById('letter_' + revealIdx);
-      if (lb) lb.classList.add('revealed');
-      nextLetterIdx++;
+    // Find next unrevealed unique letter
+    let letterToReveal = null;
+    for (const ch of uniqueLetters) {
+      if (!revealedLetters.has(ch)) { letterToReveal = ch; break; }
+    }
+    if (letterToReveal) {
+      revealedLetters.add(letterToReveal);
+      // Reveal ALL boxes with this letter
+      document.querySelectorAll('#letterGrid .letter-box').forEach((box, i) => {
+        if (box.dataset.letter === letterToReveal && !box.classList.contains('revealed')) {
+          setTimeout(() => box.classList.add('revealed'), i * 60);
+          revealedCount++;
+        }
+      });
     }
 
-    document.getElementById('letterCount').textContent = nextLetterIdx;
+    document.getElementById('letterCount').textContent = revealedCount;
     createStarBurst(btn);
 
-    // Check if all questions answered correctly
-    if (correctCount === 10) {
-      // Reveal all remaining letters
-      for (let i = nextLetterIdx; i < letterIndices.length; i++) {
-        const lb = document.getElementById('letter_' + letterIndices[i]);
-        if (lb) lb.classList.add('revealed');
-      }
+    // Check if all letters revealed or all questions done
+    if (revealedCount >= totalNonSpace || correctCount === 10) {
+      // Reveal any remaining
+      document.querySelectorAll('#letterGrid .letter-box:not(.space)').forEach(box => {
+        if (!box.classList.contains('revealed')) { box.classList.add('revealed'); revealedCount++; }
+      });
       document.getElementById('letterCount').textContent = totalNonSpace;
       gameEnded = true;
       setTimeout(() => {
@@ -1027,7 +1066,7 @@ function retryGame() {
   gameEnded = false;
   mistakes = 0;
   correctCount = 0;
-  nextLetterIdx = 0;
+  revealedCount = 0;
   document.getElementById('mistakeCount').textContent = '0';
   document.getElementById('gameOver').classList.remove('show');
   document.getElementById('complete2').classList.remove('show');
