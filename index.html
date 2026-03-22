@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>דפי עבודה - הלכות פסח וליל הסדר</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;600;700;800&family=Suez+One&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  font-family: 'Rubik', sans-serif;
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.print-btn {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(135deg, #e94560, #c23152);
+  color: white;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(233,69,96,0.4);
+  transition: transform 0.2s;
+}
+.print-btn:hover { transform: scale(1.05); }
+
+h1.main-title {
+  text-align: center;
+  font-family: 'Suez One', serif;
+  font-size: 42px;
+  color: #f8d56b;
+  text-shadow: 0 0 30px rgba(248,213,107,0.5);
+  margin-bottom: 40px;
+}
+
+.worksheet {
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  max-width: 850px;
+  margin: 0 auto 50px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.worksheet::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 8px;
+  background: linear-gradient(90deg, #e94560, #f8d56b, #53d8a8, #5b86e5, #e94560);
+}
+
+.ws-title {
+  font-family: 'Suez One', serif;
+  font-size: 32px;
+  color: #2d3436;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.ws-subtitle {
+  text-align: center;
+  color: #636e72;
+  font-size: 16px;
+  margin-bottom: 30px;
+}
+
+.ws-instructions {
+  background: linear-gradient(135deg, #fff9e6, #fff3cc);
+  border-right: 5px solid #f8d56b;
+  padding: 15px 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  font-size: 15px;
+  color: #6d5a00;
+  font-weight: 600;
+}
+
+/* Seder Plate */
+.seder-plate-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.seder-plate {
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f0e6d3, #d4c5a9);
+  border: 6px solid #b8a88a;
+  position: relative;
+  box-shadow: inset 0 0 30px rgba(0,0,0,0.1), 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.plate-item {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  cursor: default;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.plate-item.hidden {
+  background: linear-gradient(135deg, #ddd, #bbb);
+}
+.plate-item.hidden .item-emoji { opacity: 0; }
+.plate-item.hidden .q-mark { opacity: 1; }
+
+.plate-item.revealed {
+  background: linear-gradient(135deg, #fff9e6, #ffe4a0);
+  transform: scale(1.15);
+  box-shadow: 0 0 20px rgba(248,213,107,0.6);
+}
+.plate-item.revealed .item-emoji { opacity: 1; }
+.plate-item.revealed .q-mark { opacity: 0; }
+
+.item-emoji { transition: opacity 0.5s; font-size: 34px; }
+.q-mark {
+  position: absolute;
+  font-size: 28px;
+  color: #999;
+  font-weight: 800;
+  transition: opacity 0.3s;
+}
+
+.plate-item:nth-child(1) { top: 15px; left: 50%; margin-left: -35px; }
+.plate-item:nth-child(2) { top: 85px; right: 20px; }
+.plate-item:nth-child(3) { top: 85px; left: 20px; }
+.plate-item:nth-child(4) { bottom: 75px; right: 30px; }
+.plate-item:nth-child(5) { bottom: 75px; left: 30px; }
+.plate-item:nth-child(6) { bottom: 10px; left: 50%; margin-left: -35px; }
+
+.plate-label {
+  position: absolute;
+  bottom: -20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #5a4e3c;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+.plate-item.revealed .plate-label { opacity: 1; }
+
+/* Questions */
+.question-card {
+  background: #fafafa;
+  border: 2px solid #eee;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 15px;
+  transition: all 0.4s;
+}
+
+.question-card.correct {
+  border-color: #00b894;
+  background: linear-gradient(135deg, #f0fff4, #e6ffed);
+}
+.question-card.wrong {
+  border-color: #e94560;
+  background: linear-gradient(135deg, #fff5f5, #ffe0e0);
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+.q-number {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5b86e5, #36d1dc);
+  color: white;
+  text-align: center;
+  line-height: 32px;
+  font-weight: 800;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.q-text {
+  display: inline;
+  font-size: 17px;
+  font-weight: 600;
+  color: #2d3436;
+}
+
+.options {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.option-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 10px 16px;
+  border: 2px solid #dfe6e9;
+  border-radius: 12px;
+  background: white;
+  font-family: 'Rubik', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2d3436;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.option-btn:hover:not(:disabled) { border-color: #5b86e5; background: #f0f4ff; }
+.option-btn.selected-correct { border-color: #00b894; background: #00b894; color: white; }
+.option-btn.selected-wrong { border-color: #e94560; background: #e94560; color: white; }
+.option-btn:disabled { cursor: default; opacity: 0.7; }
+
+.feedback-text {
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  display: none;
+}
+.feedback-text.show { display: block; }
+.feedback-text.correct-fb { background: #e6ffed; color: #00753a; }
+.feedback-text.wrong-fb { background: #ffe0e0; color: #c0392b; }
+
+/* Score bar */
+.score-bar {
+  background: linear-gradient(135deg, #2d3436, #636e72);
+  border-radius: 30px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  color: white;
+}
+.score-label { font-weight: 700; font-size: 16px; }
+.score-stars { font-size: 24px; letter-spacing: 4px; }
+.progress-fill {
+  height: 8px;
+  background: linear-gradient(90deg, #f8d56b, #e94560);
+  border-radius: 4px;
+  transition: width 0.5s;
+}
+.progress-bg {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+/* Completion */
+.completion-msg {
+  display: none;
+  text-align: center;
+  padding: 30px;
+  background: linear-gradient(135deg, #f8d56b22, #00b89422);
+  border-radius: 20px;
+  margin-top: 20px;
+  border: 3px solid #f8d56b;
+}
+.completion-msg.show { display: block; animation: popIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+@keyframes popIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.completion-msg h2 { font-family: 'Suez One', serif; font-size: 28px; color: #2d3436; margin-bottom: 10px; }
+.completion-msg p { font-size: 18px; color: #636e72; }
+.completion-msg .big-emoji { font-size: 64px; margin-bottom: 10px; }
+
+/* ============ WORKSHEET 2 STYLES ============ */
+
+/* Hangman + Letters layout */
+.game-area {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+/* Hangman SVG */
+.hangman-box {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 20px;
+  padding: 20px;
+  border: 3px solid #dee2e6;
+  text-align: center;
+  min-width: 200px;
+  position: relative;
+}
+.hangman-box h3 {
+  font-family: 'Suez One', serif;
+  font-size: 16px;
+  color: #636e72;
+  margin-bottom: 10px;
+}
+.hangman-svg {
+  width: 160px;
+  height: 200px;
+}
+.hangman-svg line, .hangman-svg circle {
+  stroke: #e94560;
+  stroke-width: 3;
+  stroke-linecap: round;
+  fill: none;
+  opacity: 0;
+  transition: opacity 0.5s, stroke 0.5s;
+}
+.hangman-svg .base-line {
+  stroke: #adb5bd;
+  stroke-width: 2;
+  opacity: 1;
+}
+.hangman-svg .visible {
+  opacity: 1;
+}
+
+.mistakes-text {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #636e72;
+}
+.mistakes-text .red { color: #e94560; }
+
+/* Sad/happy face on hangman */
+.hangman-face {
+  transition: opacity 0.5s;
+  opacity: 0;
+}
+.hangman-face.visible { opacity: 1; }
+
+/* Letter grid */
+.letter-grid {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 300px;
+}
+
+.letter-box {
+  width: 36px;
+  height: 44px;
+  border: 3px solid #ddd;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Suez One', serif;
+  font-size: 22px;
+  color: transparent;
+  background: linear-gradient(135deg, #f5f5f5, #eee);
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  position: relative;
+}
+.letter-box.revealed {
+  color: #2d3436;
+  border-color: #f8d56b;
+  background: linear-gradient(135deg, #fff9e6, #fff3cc);
+  box-shadow: 0 0 15px rgba(248,213,107,0.5);
+  transform: scale(1.1);
+}
+.letter-box.space {
+  border: none;
+  background: none;
+  width: 12px;
+}
+
+/* True/False */
+.tf-options {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}
+.tf-btn {
+  flex: 1;
+  padding: 12px;
+  border: 3px solid #dfe6e9;
+  border-radius: 14px;
+  background: white;
+  font-family: 'Rubik', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.tf-btn:hover:not(:disabled) { transform: scale(1.03); }
+.tf-btn.true-btn:hover:not(:disabled) { border-color: #00b894; background: #e6ffed; }
+.tf-btn.false-btn:hover:not(:disabled) { border-color: #e94560; background: #ffe0e0; }
+.tf-btn.selected-correct { border-color: #00b894; background: #00b894; color: white; }
+.tf-btn.selected-wrong { border-color: #e94560; background: #e94560; color: white; }
+.tf-btn:disabled { cursor: default; }
+
+/* Game over overlay */
+.game-over-overlay {
+  display: none;
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(233, 69, 96, 0.9);
+  border-radius: 24px;
+  z-index: 50;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: 40px;
+}
+.game-over-overlay.show { display: flex; animation: popIn 0.5s; }
+.game-over-overlay h2 { font-family: 'Suez One', serif; font-size: 32px; margin-bottom: 10px; }
+.game-over-overlay p { font-size: 18px; margin-bottom: 5px; }
+.game-over-overlay .retry-btn {
+  margin-top: 20px;
+  padding: 12px 30px;
+  border: 3px solid white;
+  border-radius: 30px;
+  background: transparent;
+  color: white;
+  font-family: 'Rubik', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.game-over-overlay .retry-btn:hover { background: white; color: #e94560; }
+
+/* Confetti */
+.confetti-container {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+.confetti {
+  position: absolute;
+  top: -20px;
+  animation: confettiFall 3s ease-in forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* Star burst */
+.star {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10000;
+  animation: starPop 0.8s ease-out forwards;
+}
+@keyframes starPop {
+  0% { transform: scale(0) translate(0,0); opacity: 1; }
+  50% { opacity: 1; }
+  100% { transform: scale(1.5) translate(var(--tx), var(--ty)); opacity: 0; }
+}
+
+@media print {
+  body { background: white !important; padding: 10px; }
+  .worksheet { box-shadow: none; break-inside: avoid; }
+  .print-btn { display: none; }
+  .score-bar { display: none; }
+  .option-btn, .tf-btn { border: 2px solid #999 !important; background: white !important; color: black !important; }
+  .confetti-container { display: none; }
+  .plate-item { background: #eee !important; }
+  .letter-box { border: 2px solid #999 !important; }
+  .hangman-svg .visible { opacity: 1 !important; }
+}
+</style>
+</head>
+<body>
+
+<button class="print-btn" onclick="window.print()">🖨️ הדפסה</button>
+
+<h1 class="main-title">✨ דפי עבודה לפסח — כיתה ב' ✨</h1>
+
+<!-- ==================== WORKSHEET 1 ==================== -->
+<div class="worksheet" id="ws1">
+  <div class="ws-title">🍽️ חשוף את קערת הסדר!</div>
+  <div class="ws-subtitle">ענה נכון על השאלות וגלה מה מסתתר בקערת ליל הסדר</div>
+
+  <div class="ws-instructions">
+    📌 על כל תשובה נכונה — פריט חדש נחשף בקערת הסדר עם אנימציה מיוחדת! ענה על 6 שאלות וגלה את הקערה המלאה!
+  </div>
+
+  <div class="score-bar">
+    <span class="score-label">ניקוד:</span>
+    <span class="score-stars" id="stars1"></span>
+    <div class="progress-bg"><div class="progress-fill" id="progress1" style="width:0%"></div></div>
+  </div>
+
+  <div class="seder-plate-container">
+    <div class="seder-plate">
+      <div class="plate-item hidden" id="plate0">
+        <span class="q-mark">?</span>
+        <span class="item-emoji">🥚</span>
+        <span class="plate-label">ביצה</span>
+      </div>
+      <div class="plate-item hidden" id="plate1">
+        <span class="q-mark">?</span>
+        <span class="item-emoji">🦴</span>
+        <span class="plate-label">זרוע</span>
+      </div>
+      <div class="plate-item hidden" id="plate2">
+        <span class="q-mark">?</span>
+        <span class="item-emoji">🥬</span>
+        <span class="plate-label">כרפס</span>
+      </div>
+      <div class="plate-item hidden" id="plate3">
+        <span class="q-mark">?</span>
+        <span class="item-emoji">🫒</span>
+        <span class="plate-label">חרוסת</span>
+      </div>
+      <div class="plate-item hidden" id="plate4">
+        <span class="q-mark">?</span>
+        <span class="item-emoji">🌿</span>
+        <span class="plate-label">מרור</span>
+      </div>
+      <div class="plate-item hidden" id="plate5">
+        <span class="q-mark">?</span>
+        <span class="item-emoji">🫓</span>
+        <span class="plate-label">מצה</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="questions1">
+    <div class="question-card" id="q1_1">
+      <span class="q-number">1</span>
+      <span class="q-text">בליל הסדר אנחנו אוכלים מצה. למה?</span>
+      <div class="options">
+        <button class="option-btn" onclick="checkAnswer1(this, 1, 'b')">כי זה טעים יותר מלחם</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 1, 'a')">כי הבצק לא הספיק לתפוח כשיצאו ממצרים</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 1, 'c')">כי לא היה להם תנור</button>
+      </div>
+      <div class="feedback-text" id="fb1_1"></div>
+    </div>
+
+    <div class="question-card" id="q1_2">
+      <span class="q-number">2</span>
+      <span class="q-text">כמה כוסות מיץ ענבים (או יין) שותים בליל הסדר?</span>
+      <div class="options">
+        <button class="option-btn" onclick="checkAnswer1(this, 2, 'b')">2 כוסות</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 2, 'a')">4 כוסות</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 2, 'c')">7 כוסות</button>
+      </div>
+      <div class="feedback-text" id="fb1_2"></div>
+    </div>
+
+    <div class="question-card" id="q1_3">
+      <span class="q-number">3</span>
+      <span class="q-text">מה עושים בערב פסח עם נר או פנס?</span>
+      <div class="options">
+        <button class="option-btn" onclick="checkAnswer1(this, 3, 'a')">בדיקת חמץ — מחפשים פירורי חמץ בכל הבית</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 3, 'b')">מדליקים נרות שבת</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 3, 'c')">מחפשים את האפיקומן</button>
+      </div>
+      <div class="feedback-text" id="fb1_3"></div>
+    </div>
+
+    <div class="question-card" id="q1_4">
+      <span class="q-number">4</span>
+      <span class="q-text">בליל הסדר אנחנו "מיסבים" (יושבים בנטייה). לאיזה צד?</span>
+      <div class="options">
+        <button class="option-btn" onclick="checkAnswer1(this, 4, 'a')">צד שמאל</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 4, 'b')">צד ימין</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 4, 'c')">קדימה</button>
+      </div>
+      <div class="feedback-text" id="fb1_4"></div>
+    </div>
+
+    <div class="question-card" id="q1_5">
+      <span class="q-number">5</span>
+      <span class="q-text">מה זה "מרור" ולמה אוכלים אותו?</span>
+      <div class="options">
+        <button class="option-btn" onclick="checkAnswer1(this, 5, 'c')">ירק מתוק — לזכר הגאולה</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 5, 'a')">ירק מר — לזכר העבדות הקשה במצרים</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 5, 'b')">ירק ירוק — לזכר האביב</button>
+      </div>
+      <div class="feedback-text" id="fb1_5"></div>
+    </div>
+
+    <div class="question-card" id="q1_6">
+      <span class="q-number">6</span>
+      <span class="q-text">מה המצווה המיוחדת של ליל הסדר?</span>
+      <div class="options">
+        <button class="option-btn" onclick="checkAnswer1(this, 6, 'b')">לרקוד כל הלילה</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 6, 'c')">לישון מוקדם</button>
+        <button class="option-btn" onclick="checkAnswer1(this, 6, 'a')">לספר את סיפור יציאת מצרים</button>
+      </div>
+      <div class="feedback-text" id="fb1_6"></div>
+    </div>
+  </div>
+
+  <div class="completion-msg" id="complete1">
+    <div class="big-emoji">🎉🍽️🎉</div>
+    <h2>כל הכבוד! קערת הסדר שלמה!</h2>
+    <p>ענית נכון על כל השאלות וחשפת את כל הפריטים!</p>
+    <p style="margin-top:10px;font-size:14px;color:#888;">חג פסח כשר ושמח! 🌸</p>
+  </div>
+</div>
+
+<!-- ==================== WORKSHEET 2 ==================== -->
+<div class="worksheet" id="ws2" style="position:relative;">
+  <div class="ws-title">🎭 איש תלוי — גלה את המשפט מההגדה!</div>
+  <div class="ws-subtitle">ענה נכון — אות נחשפת! ענה לא נכון — חלק נוסף מהאיש מצטייר... הצל אותו!</div>
+
+  <div class="ws-instructions">
+    📌 על כל תשובה נכונה נחשפת אות אחת מהמשפט המפורסם מההגדה של פסח. אבל זהירות — על כל טעות מצטייר חלק נוסף של האיש התלוי! אם האיש יושלם — הפסדת! יש לך 6 טעויות בלבד.
+  </div>
+
+  <div class="game-area">
+    <!-- Hangman Drawing -->
+    <div class="hangman-box">
+      <h3>😰 הצל את האיש!</h3>
+      <svg class="hangman-svg" viewBox="0 0 160 200">
+        <!-- Base structure - always visible -->
+        <line class="base-line" x1="10" y1="190" x2="150" y2="190"/>
+        <line class="base-line" x1="40" y1="190" x2="40" y2="20"/>
+        <line class="base-line" x1="40" y1="20" x2="110" y2="20"/>
+        <line class="base-line" x1="110" y1="20" x2="110" y2="40"/>
+
+        <!-- Body parts (revealed on mistakes) -->
+        <!-- 1: Head -->
+        <circle id="hm_head" cx="110" cy="55" r="15"/>
+        <!-- 2: Body -->
+        <line id="hm_body" x1="110" y1="70" x2="110" y2="120"/>
+        <!-- 3: Left arm -->
+        <line id="hm_larm" x1="110" y1="85" x2="80" y2="105"/>
+        <!-- 4: Right arm -->
+        <line id="hm_rarm" x1="110" y1="85" x2="140" y2="105"/>
+        <!-- 5: Left leg -->
+        <line id="hm_lleg" x1="110" y1="120" x2="80" y2="155"/>
+        <!-- 6: Right leg -->
+        <line id="hm_rleg" x1="110" y1="120" x2="140" y2="155"/>
+
+        <!-- Sad face (shown when complete) -->
+        <g class="hangman-face" id="hm_sad_face">
+          <circle cx="104" cy="52" r="2" style="fill:#e94560;stroke:none;opacity:inherit"/>
+          <circle cx="116" cy="52" r="2" style="fill:#e94560;stroke:none;opacity:inherit"/>
+          <path d="M 103 62 Q 110 57 117 62" style="stroke:#e94560;fill:none;stroke-width:2;opacity:inherit"/>
+        </g>
+      </svg>
+      <div class="mistakes-text">
+        טעויות: <span class="red" id="mistakeCount">0</span> / 6
+      </div>
+    </div>
+
+    <!-- Letter Grid -->
+    <div style="flex:1;min-width:300px;">
+      <div class="letter-grid" id="letterGrid"></div>
+      <div style="text-align:center;margin-top:10px;">
+        <span style="font-size:14px;color:#888;">אותיות שנחשפו: <strong id="letterCount">0</strong> / <strong id="totalLetters">0</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <div id="questions2">
+    <div class="question-card" id="q2_1">
+      <span class="q-number">1</span>
+      <span class="q-text">בפסח מותר לאכול לחם רגיל.</span>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="checkTF(this, 1, true)">✅ נכון</button>
+        <button class="tf-btn false-btn" onclick="checkTF(this, 1, false)">❌ לא נכון</button>
+      </div>
+      <div class="feedback-text" id="fb2_1"></div>
+    </div>
+
+    <div class="question-card" id="q2_2">
+      <span class="q-number">2</span>
+      <span class="q-text">בליל הסדר שותים 4 כוסות יין או מיץ ענבים.</span>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="checkTF(this, 2, true)">✅ נכון</button>
+        <button class="tf-btn false-btn" onclick="checkTF(this, 2, false)">❌ לא נכון</button>
+      </div>
+      <div class="feedback-text" id="fb2_2"></div>
+    </div>
+
+    <div class="question-card" id="q2_3">
+      <span class="q-number">3</span>
+      <span class="q-text">בדיקת חמץ עושים עם שואב אבק.</span>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="checkTF(this, 3, true)">✅ נכון</button>
+        <button class="tf-btn false-btn" onclick="checkTF(this, 3, false)">❌ לא נכון</button>
+      </div>
+      <div class="feedback-text" id="fb2_3"></div>
+    </div>
+
+    <div class="question-card" id="q2_4">
+      <span class="q-number">4</span>
+      <span class="q-text">בליל הסדר יושבים בהסבה לצד שמאל — כמו בני חורין!</span>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="checkTF(this, 4, true)">✅ נכון</button>
+        <button class="tf-btn false-btn" onclick="checkTF(this, 4, false)">❌ לא נכון</button>
+      </div>
+      <div class="feedback-text" id="fb2_4"></div>
+    </div>
+
+    <div class="question-card" id="q2_5">
+      <span class="q-number">5</span>
+      <span class="q-text">חרוסת מזכירה את הטיט שבני ישראל עבדו בו במצרים.</span>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="checkTF(this, 5, true)">✅ נכון</button>
+        <button class="tf-btn false-btn" onclick="checkTF(this, 5, false)">❌ לא נכון</button>
+      </div>
+      <div class="feedback-text" id="fb2_5"></div>
+    </div>
+
+    <div class="question-card" id="q2_6">
+      <span class="q-number">6</span>
+      <span class="q-text">ההגדה של פסח מספרת על חנוכת בית המקדש.</span>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="checkTF(this, 6, true)">✅ נכון</button>
+        <button class="tf-btn false-btn" onclick="checkTF(this, 6, false)">❌ לא נכון</button>
+      </div>
+      <div class="feedback-text" id="fb2_6"></div>
+    </div>
+
+    <div class="question-card" id="q2_7">
+      <span class="q-number">7</span>
+      <span class="q-text">הילד הכי קטן שואל "מה נשתנה" בליל הסדר.</span>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="checkTF(this, 7, true)">✅ נכון</button>
+        <button class="tf-btn false-btn" onclick="checkTF(this, 7, false)">❌ לא נכון</button>
+      </div>
+      <div class="feedback-text" id="fb2_7"></div>
+    </div>
+
+    <div class="question-card" id="q2_8">
+      <span class="q-number">8</span>
+      <span class="q-text">האפיקומן הוא חתיכת מצה שמחביאים ואוכלים בסוף הסעודה.</span>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="checkTF(this, 8, true)">✅ נכון</button>
+        <button class="tf-btn false-btn" onclick="checkTF(this, 8, false)">❌ לא נכון</button>
+      </div>
+      <div class="feedback-text" id="fb2_8"></div>
+    </div>
+
+    <div class="question-card" id="q2_9">
+      <span class="q-number">9</span>
+      <span class="q-text">כורך — זה כריך של מצה עם מרור שאוכלים בליל הסדר.</span>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="checkTF(this, 9, true)">✅ נכון</button>
+        <button class="tf-btn false-btn" onclick="checkTF(this, 9, false)">❌ לא נכון</button>
+      </div>
+      <div class="feedback-text" id="fb2_9"></div>
+    </div>
+
+    <div class="question-card" id="q2_10">
+      <span class="q-number">10</span>
+      <span class="q-text">בפסח אסור להחזיק חמץ בבית — צריך לבער (לשרוף) אותו לפני החג.</span>
+      <div class="tf-options">
+        <button class="tf-btn true-btn" onclick="checkTF(this, 10, true)">✅ נכון</button>
+        <button class="tf-btn false-btn" onclick="checkTF(this, 10, false)">❌ לא נכון</button>
+      </div>
+      <div class="feedback-text" id="fb2_10"></div>
+    </div>
+  </div>
+
+  <div class="completion-msg" id="complete2">
+    <div class="big-emoji">🌟📜🌟</div>
+    <h2>מדהים! הצלת את האיש וגילית את המשפט!</h2>
+    <p id="revealedPasuk" style="font-family:'Suez One',serif; font-size:22px; color:#5a4e3c; margin-top:15px; line-height:1.6;"></p>
+    <p style="margin-top:15px;font-size:14px;color:#888;">מתוך ההגדה של פסח — חג שמח! 🌺</p>
+  </div>
+
+  <!-- Game Over Overlay -->
+  <div class="game-over-overlay" id="gameOver">
+    <div class="big-emoji" style="font-size:80px;">😢</div>
+    <h2>אוי לא! האיש הושלם!</h2>
+    <p>המשפט מההגדה היה:</p>
+    <p style="font-family:'Suez One',serif;font-size:22px;margin-top:10px;color:#fff;" id="gameOverPasuk"></p>
+    <button class="retry-btn" onclick="retryGame()">🔄 נסה שוב!</button>
+  </div>
+</div>
+
+<div class="confetti-container" id="confettiBox"></div>
+
+<script>
+// ============ WORKSHEET 1 ============
+const answers1 = { 1:'a', 2:'a', 3:'a', 4:'a', 5:'a', 6:'a' };
+const feedbacks1 = {
+  1: { correct: '🎉 נכון! הבצק לא הספיק לתפוח ולכן אנחנו אוכלים מצה!', wrong: '🤔 לא בדיוק... בני ישראל יצאו בחיפזון והבצק לא הספיק לתפוח!' },
+  2: { correct: '🎉 מצוין! 4 כוסות כנגד 4 לשונות של גאולה!', wrong: '🤔 שותים בדיוק 4 כוסות כנגד 4 לשונות של גאולה.' },
+  3: { correct: '🎉 יפה מאוד! מחפשים חמץ בכל הפינות עם נר!', wrong: '🤔 בודקים חמץ עם נר או פנס בכל הבית!' },
+  4: { correct: '🎉 נכון! מיסבים לצד שמאל כמו בני חורין!', wrong: '🤔 מיסבים דווקא לצד שמאל!' },
+  5: { correct: '🎉 מעולה! המרור מר כמו העבדות הקשה!', wrong: '🤔 המרור הוא ירק מר — לזכר השעבוד הקשה במצרים.' },
+  6: { correct: '🎉 בדיוק! "והגדת לבנך" — מספרים את הסיפור!', wrong: '🤔 המצווה המיוחדת היא לספר את סיפור יציאת מצרים!' }
+};
+
+let score1 = 0;
+
+function checkAnswer1(btn, qNum, selected) {
+  const card = document.getElementById('q1_' + qNum);
+  const fb = document.getElementById('fb1_' + qNum);
+  const buttons = card.querySelectorAll('.option-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  if (selected === answers1[qNum]) {
+    btn.classList.add('selected-correct');
+    card.classList.add('correct');
+    fb.textContent = feedbacks1[qNum].correct;
+    fb.className = 'feedback-text show correct-fb';
+    revealPlateItem(score1);
+    score1++;
+    updateScore1();
+    createStarBurst(btn);
+    if (score1 === 6) {
+      setTimeout(() => { document.getElementById('complete1').classList.add('show'); launchConfetti(); }, 800);
+    }
+  } else {
+    btn.classList.add('selected-wrong');
+    card.classList.add('wrong');
+    fb.textContent = feedbacks1[qNum].wrong;
+    fb.className = 'feedback-text show wrong-fb';
+    setTimeout(() => {
+      buttons.forEach(b => { if (!b.classList.contains('selected-wrong')) b.disabled = false; });
+      card.classList.remove('wrong');
+    }, 1500);
+  }
+}
+
+function revealPlateItem(index) {
+  const item = document.getElementById('plate' + index);
+  if (item) { item.classList.remove('hidden'); item.classList.add('revealed'); }
+}
+
+function updateScore1() {
+  document.getElementById('stars1').textContent = '\u2B50'.repeat(score1) + '\u2606'.repeat(6 - score1);
+  document.getElementById('progress1').style.width = (score1/6*100) + '%';
+}
+updateScore1();
+
+// ============ WORKSHEET 2 — HANGMAN ============
+const secretText = 'בכל דור ודור חייב אדם לראות את עצמו כאילו הוא יצא ממצרים';
+const tfAnswers = { 1:false, 2:true, 3:false, 4:true, 5:true, 6:false, 7:true, 8:true, 9:true, 10:true };
+const tfFeedbacks = {
+  1: { correct: '❌ נכון! בפסח אסור לאכול חמץ — רק מצה!', wrong: '😵 לא... בפסח אסור לאכול לחם! רק מצה!' },
+  2: { correct: '✅ מצוין! 4 כוסות כנגד 4 לשונות גאולה!', wrong: '😵 כן כן! שותים 4 כוסות בליל הסדר!' },
+  3: { correct: '❌ נכון! בודקים חמץ עם נר או פנס, לא שואב אבק!', wrong: '😵 לא... בדיקת חמץ עושים עם נר או פנס!' },
+  4: { correct: '✅ יפה! הסבה לשמאל כמו מלכים בני חורין!', wrong: '😵 דווקא כן! יושבים בהסבה לשמאל!' },
+  5: { correct: '✅ מעולה! חרוסת = טיט ולבנים!', wrong: '😵 כן! חרוסת מזכירה את הטיט שעבדו בו!' },
+  6: { correct: '❌ נכון! ההגדה מספרת על יציאת מצרים, לא חנוכת המקדש!', wrong: '😵 לא... ההגדה מספרת על יציאת מצרים!' },
+  7: { correct: '✅ נכון! הקטן שואל מה נשתנה!', wrong: '😵 כן! הילד הקטן שואל מה נשתנה!' },
+  8: { correct: '✅ בדיוק! אוכלים אפיקומן בסוף הסעודה!', wrong: '😵 כן! האפיקומן נאכל בסוף הסדר!' },
+  9: { correct: '✅ נכון! כריך של מצה ומרור — כמו שהלל היה עושה!', wrong: '😵 כן! כורך זה מצה + מרור ביחד!' },
+  10: { correct: '✅ מצוין! שורפים את החמץ בבוקר של ערב פסח!', wrong: '😵 כן! חייבים לבער חמץ לפני החג!' }
+};
+
+const hangmanParts = ['hm_head', 'hm_body', 'hm_larm', 'hm_rarm', 'hm_lleg', 'hm_rleg'];
+let mistakes = 0;
+let correctCount = 0;
+let totalNonSpace = 0;
+let nextLetterIdx = 0;
+let gameEnded = false;
+
+// Shuffle array to randomize which letters get revealed
+let letterIndices = [];
+
+function buildLetterGrid() {
+  const grid = document.getElementById('letterGrid');
+  grid.innerHTML = '';
+  const words = secretText.split(' ');
+  let idx = 0;
+  letterIndices = [];
+
+  words.forEach((word, wIdx) => {
+    for (let i = 0; i < word.length; i++) {
+      const box = document.createElement('div');
+      box.className = 'letter-box';
+      box.textContent = word[i];
+      box.id = 'letter_' + idx;
+      letterIndices.push(idx);
+      idx++;
+      grid.appendChild(box);
+    }
+    if (wIdx < words.length - 1) {
+      const space = document.createElement('div');
+      space.className = 'letter-box space';
+      grid.appendChild(space);
+    }
+  });
+
+  totalNonSpace = idx;
+  // Shuffle letter reveal order for surprise
+  for (let i = letterIndices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [letterIndices[i], letterIndices[j]] = [letterIndices[j], letterIndices[i]];
+  }
+
+  document.getElementById('totalLetters').textContent = totalNonSpace;
+  document.getElementById('letterCount').textContent = 0;
+}
+buildLetterGrid();
+
+function checkTF(btn, qNum, selected) {
+  if (gameEnded) return;
+
+  const card = document.getElementById('q2_' + qNum);
+  const fb = document.getElementById('fb2_' + qNum);
+  const buttons = card.querySelectorAll('.tf-btn');
+  buttons.forEach(b => b.disabled = true);
+
+  if (selected === tfAnswers[qNum]) {
+    // CORRECT — reveal one letter
+    btn.classList.add('selected-correct');
+    card.classList.add('correct');
+    fb.textContent = tfFeedbacks[qNum].correct;
+    fb.className = 'feedback-text show correct-fb';
+    correctCount++;
+
+    if (nextLetterIdx < letterIndices.length) {
+      const revealIdx = letterIndices[nextLetterIdx];
+      const lb = document.getElementById('letter_' + revealIdx);
+      if (lb) lb.classList.add('revealed');
+      nextLetterIdx++;
+    }
+
+    document.getElementById('letterCount').textContent = nextLetterIdx;
+    createStarBurst(btn);
+
+    // Check if all questions answered correctly
+    if (correctCount === 10) {
+      // Reveal all remaining letters
+      for (let i = nextLetterIdx; i < letterIndices.length; i++) {
+        const lb = document.getElementById('letter_' + letterIndices[i]);
+        if (lb) lb.classList.add('revealed');
+      }
+      document.getElementById('letterCount').textContent = totalNonSpace;
+      gameEnded = true;
+      setTimeout(() => {
+        document.getElementById('revealedPasuk').textContent = '\u00AB' + secretText + '\u00BB';
+        document.getElementById('complete2').classList.add('show');
+        launchConfetti();
+      }, 600);
+    }
+  } else {
+    // WRONG — add hangman part
+    btn.classList.add('selected-wrong');
+    card.classList.add('wrong');
+    fb.textContent = tfFeedbacks[qNum].wrong;
+    fb.className = 'feedback-text show wrong-fb';
+
+    if (mistakes < 6) {
+      const part = document.getElementById(hangmanParts[mistakes]);
+      if (part) part.classList.add('visible');
+      mistakes++;
+      document.getElementById('mistakeCount').textContent = mistakes;
+    }
+
+    if (mistakes >= 6) {
+      // Game over!
+      gameEnded = true;
+      document.getElementById('hm_sad_face').classList.add('visible');
+      setTimeout(() => {
+        document.getElementById('gameOverPasuk').textContent = '\u00AB' + secretText + '\u00BB';
+        document.getElementById('gameOver').classList.add('show');
+        // Disable all remaining buttons
+        document.querySelectorAll('#questions2 .tf-btn').forEach(b => b.disabled = true);
+      }, 800);
+    } else {
+      // Allow retry on wrong answer (re-enable non-wrong buttons)
+      setTimeout(() => {
+        buttons.forEach(b => { if (!b.classList.contains('selected-wrong')) b.disabled = false; });
+        card.classList.remove('wrong');
+      }, 1500);
+    }
+  }
+}
+
+function retryGame() {
+  // Reset worksheet 2
+  gameEnded = false;
+  mistakes = 0;
+  correctCount = 0;
+  nextLetterIdx = 0;
+  document.getElementById('mistakeCount').textContent = '0';
+  document.getElementById('gameOver').classList.remove('show');
+  document.getElementById('complete2').classList.remove('show');
+  document.getElementById('hm_sad_face').classList.remove('visible');
+
+  hangmanParts.forEach(id => document.getElementById(id).classList.remove('visible'));
+
+  buildLetterGrid();
+
+  for (let i = 1; i <= 10; i++) {
+    const card = document.getElementById('q2_' + i);
+    card.classList.remove('correct', 'wrong');
+    const fb = document.getElementById('fb2_' + i);
+    fb.className = 'feedback-text';
+    fb.textContent = '';
+    card.querySelectorAll('.tf-btn').forEach(b => {
+      b.disabled = false;
+      b.classList.remove('selected-correct', 'selected-wrong');
+    });
+  }
+}
+
+// ============ EFFECTS ============
+function createStarBurst(el) {
+  const r = el.getBoundingClientRect();
+  const emojis = ['\u2B50','\u2728','\uD83C\uDF1F','\uD83D\uDCAB','\uD83C\uDF8A'];
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    const angle = (i/8)*Math.PI*2;
+    const dist = 40+Math.random()*30;
+    s.style.cssText = 'left:'+(r.left+r.width/2)+'px;top:'+(r.top+r.height/2)+'px;font-size:'+(16+Math.random()*12)+'px;--tx:'+Math.cos(angle)*dist+'px;--ty:'+Math.sin(angle)*dist+'px;';
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 1000);
+  }
+}
+
+function launchConfetti() {
+  const box = document.getElementById('confettiBox');
+  const colors = ['#e94560','#f8d56b','#00b894','#5b86e5','#fd79a8','#6c5ce7','#55efc4'];
+  for (let i = 0; i < 80; i++) {
+    const c = document.createElement('div');
+    c.className = 'confetti';
+    c.style.cssText = 'left:'+Math.random()*100+'%;background:'+colors[Math.floor(Math.random()*colors.length)]+';width:'+(8+Math.random()*8)+'px;height:'+(8+Math.random()*8)+'px;border-radius:'+(Math.random()>0.5?'50%':'2px')+';animation-delay:'+Math.random()*2+'s;animation-duration:'+(2+Math.random()*2)+'s;';
+    box.appendChild(c);
+  }
+  setTimeout(() => box.innerHTML = '', 5000);
+}
+</script>
+
+</body>
+</html>
